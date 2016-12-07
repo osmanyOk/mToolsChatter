@@ -1,0 +1,42 @@
+<project name="Sample usage of Salesforce Ant tasks" default="deploy" basedir="." xmlns:sf="antlib:com.salesforce">
+    <property environment="env"/>
+
+    <!-- Setting default value for username, password and session id properties to empty string 
+         so unset values are treated as empty. Without this, ant expressions such as ${sf.username}
+         will be treated literally.
+    -->
+    <condition property="username" value=""> <not> <isset property="username"/> </not> </condition>
+    <condition property="password" value=""> <not> <isset property="password"/> </not> </condition>
+    <condition property="testLevel" value=""> <not> <isset property="testLevel"/> </not> </condition>
+
+    <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+        <classpath>
+            <pathelement location="ant-salesforce.jar" />        	
+        </classpath>
+    </taskdef>
+	
+    <target name="deploy">
+      <sf:deploy username="${username}" password="${password}" serverurl="${serverurl}" testLevel="${testLevel}" deployRoot="src" />
+    </target>
+   <!-- 
+   <target name="runTest">
+      <sf:deploy username="${username}" password="${password}" serverurl="${serverurl}" deployRoot="test" />
+    </target>
+
+    <target name="pmd">
+        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask"/>
+        <pmd shortFilenames="true">
+            <sourceLanguage name="java" version="1.6"/>
+            <ruleset>rulesets/java/design.xml</ruleset>
+            <ruleset>java-basic</ruleset>
+            <formatter type="html" toFile="pmd_report.html">
+                <param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
+            </formatter>
+            <fileset dir="/usr/local/j2sdk1.4.1_01/src/">
+                <include name="java/lang/*.java"/>
+            </fileset>
+        </pmd>
+    </target>    
+    -->
+
+</project>
