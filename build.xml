@@ -17,6 +17,6 @@
        token="&lt;namespacePrefix&gt;ts2sourcing&lt;/namespacePrefix&gt;"
        value="" />
      -->
-    <sf:deploy username="${username}" password="${password}" serverurl="${serverurl}" testlevel="${testlevel}" deployRoot="src"/>
+    <sf:deploy username="${username}" password="${password}" serverurl="${serverurl}" testlevel="${testlevel}" deployRoot="src/src"/>
   </target>  
 </project>
