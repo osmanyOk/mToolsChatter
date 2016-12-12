@@ -11,7 +11,7 @@
       </classpath>
   </taskdef>
 	
-  <target name="deploy">
+  <target name="deploy" depends="PMD_JavaScript">
     <!--
 	<replace file="src/src/package.xml"
        token="&lt;namespacePrefix&gt;ts2sourcing&lt;/namespacePrefix&gt;"
@@ -19,4 +19,43 @@
      -->
     <sf:deploy username="${username}" password="${password}" serverurl="${serverurl}" testlevel="${testlevel}" deployRoot="src/src"/>
   </target>  
+    
+	<path id="pmd.classpath">
+	    <pathelement location="${build}"/>
+	    <fileset dir="pmd/lib/">
+		<include name="*.jar"/>
+	    </fileset>
+	</path>
+	
+	<target name="PMD_JavaScript" depends="PMD_Apex">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
+		<pmd shortFilenames="true">
+			<ruleset>rulesets/ecmascript/basic.xml</ruleset>
+			<ruleset>rulesets/ecmascript/braces.xml</ruleset>
+			<ruleset>rulesets/ecmascript/controversial.xml</ruleset>
+			<ruleset>rulesets/ecmascript/unnecessary.xml</ruleset>
+			<formatter type="html" toFile="pmd_js.html" toConsole="true">
+		    		<param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
+        		</formatter>
+			<fileset dir="src/src">
+			      <include name="**/*.js"/>
+			</fileset>
+	        </pmd>
+	  </target>	
+	
+	<target name="PMD_Apex">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
+		<pmd shortFilenames="true">
+			<ruleset>rulesets/apex/complexity.xml</ruleset>
+			<ruleset>rulesets/apex/style.xml</ruleset>
+			<ruleset>rulesets/apex/apexunit.xml</ruleset>
+			<ruleset>rulesets/apex/performance.xml</ruleset>
+			<formatter type="html" toFile="pmd_apex.html" toConsole="true">
+		    		<param name="linkPrefix" value="http://pmd.sourceforge.net/xref/"/>
+        		</formatter>
+			<fileset dir="src/src">
+			      <include name="**/*.cls"/>
+			</fileset>
+	        </pmd>
+	  </target>
 </project>
